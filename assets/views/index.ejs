@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('partials/head.ejs') %>
+
+<body>
+
+    <%- include('partials/header.ejs') %>
+
+    <main class="ui main container">
+
+        <div class="ui grid">
+            <div class="row">
+                <div class="sixteen wide mobile eight wide tablet eight wide computer column">
+                    <div class="ui segment">
+                        <h4 class="ui header">
+                            <i class="green circle icon"></i>
+                            <div class="content">
+                                Online Clients
+                            </div>
+                        </h4>
+                        <div class="ui middle aligned divided list">
+                            <% if(clientsOnline.length > 0) { %>
+                                <% clientsOnline.forEach(function(client){ %>
+                                    <div class="item">
+                                        <div class="right floated content">
+                                            <a class="ui button" href="/manage/<%= client.id %>/info">Manage</a>
+                                        </div>
+                                        <i class="large mobile middle aligned icon"></i>
+                                        <div class="content">
+                                            <%= client.device.model %>
+                                        </div>
+                                    </div>
+                                <% }); %>
+                            <% } else { %>
+                                <div class="item">
+                                    <div class="content">
+                                        No online clients
+                                    </div>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+                <div class="sixteen wide mobile eight wide tablet eight wide computer column">
+                    <div class="ui segment">
+                        <h4 class="ui header">
+                            <i class="red circle icon"></i>
+                            <div class="content">
+                                Offline Clients
+                            </div>
+                        </h4>
+                        <div class="ui middle aligned divided list">
+                            <% if(clientsOffline.length > 0) { %>
+                                <% clientsOffline.forEach(function(client){ %>
+                                    <div class="item">
+                                        <div class="right floated content">
+                                            <a class="ui button" href="/manage/<%= client.id %>/info">Manage</a>
+                                        </div>
+                                        <i class="large mobile middle aligned icon"></i>
+                                        <div class="content">
+                                            <%= client.device.model %>
+                                        </div>
+                                    </div>
+                                <% }); %>
+                            <% } else { %>
+                                <div class="item">
+                                    <div class="content">
+                                        No offline clients
+                                    </div>
+                                </div>
+                            <% } %>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <%- include('partials/footer.ejs') %>
+
+</body>
+
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+
+<%- include('partials/head.ejs') %>
+
+
+<body>
+    <style type="text/css">
+        body {
+            background: #1a1a1a;
+            background: -webkit-linear-gradient(to bottom right, #1a1a1a, #2d2d2d);
+            background: linear-gradient(to bottom right, #1a1a1a, #2d2d2d);
+        }
+
+        body>.grid {
+            height: 100%;
+        }
+
+        .image {
+            margin-top: -100px;
+        }
+
+        .column {
+            max-width: 450px;
+        }
+
+        .ui.stacked.segment {
+            background-color: #2d2d2d !important;
+            border: 1px solid #3d3d3d !important;
+        }
+
+        .ui.large.form input {
+            background-color: #252525 !important;
+            color: #e0e0e0 !important;
+            border-color: #3d3d3d !important;
+        }
+
+        .ui.large.form input::placeholder {
+            color: #888 !important;
+        }
+
+        .ui.image.header .content {
+            color: #e0e0e0 !important;
+        }
+
+        .ui.teal.button {
+            background-color: #3d3d3d !important;
+            color: #e0e0e0 !important;
+        }
+
+        .ui.teal.button:hover {
+            background-color: #4d4d4d !important;
+        }
+
+        .ui.icon.input i.icon {
+            color: #888 !important;
+        }
+    </style>
+    <script>
+        $(document).ready(function () {
+            $('.ui.form').form({
+                fields: {
+                    email: {
+                        identifier: 'username',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: 'Please enter your username'
+                            }
+                        ]
+                    },
+                    password: {
+                        identifier: 'password',
+                        rules: [
+                            {
+                                type: 'empty',
+                                prompt: 'Please enter your password'
+                            }
+                        ]
+                    }
+                }
+            });
+        });
+    </script>
+
+    <div class="ui middle aligned center aligned grid">
+
+        <div class="column">
+
+            <form class="ui large form" method="POST">
+                <div class="ui stacked segment">
+                    <h2 class="ui image header">
+                        <div class="content">
+                            <h1 class="ui header" style="text-align: center;font-size: 50px;color: #ffffff;">
+                                BlackAI ⚛
+                            </h1>
+                        </div>
+                    </h2>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="user icon"></i>
+                            <input type="text" name="username" placeholder="Username">
+                        </div>
+                    </div>
+                    <div class="field">
+                        <div class="ui left icon input">
+                            <i class="lock icon"></i>
+                            <input type="password" name="password" placeholder="Password">
+                        </div>
+                    </div>
+                    <div class="ui fluid large teal submit button">Login</div>
+                    <div class="ui error message"></div>
+
+                </div>
+
+            </form>
+            <%- include('partials/footer.ejs') %>
+        </div>
+    </div>
+</body>
+
+</html>
